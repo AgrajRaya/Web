@@ -7,7 +7,7 @@
 ********************************************************************************/
 
 const express = require('express');
-const siteData = require("./modules/data-service");
+const siteData = require("./module/data-service");
 const path = require("path");
 
 const app = express();
