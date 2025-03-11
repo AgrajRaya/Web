@@ -12,10 +12,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-<<<<<<< HEAD
+
     "ejs": "^3.1.10",
-=======
->>>>>>> 057687b9cf5baaac1a5916517d5ebba1947ec620
     "express": "^4.21.2"
   },
   "devDependencies": {
