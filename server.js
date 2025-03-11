@@ -1,35 +1,27 @@
 /********************************************************************************
-<<<<<<< HEAD
 *  WEB322 – Assignment 04
-=======
-*  WEB322 – Assignment 02
->>>>>>> 057687b9cf5baaac1a5916517d5ebba1947ec620
-* 
-*  I declare that this assignment is my own work in accordance with Seneca's
-*  Academic Integrity Policy:
+*  Name: Agraj Raya Student ID: 147863237 Date: 2025-02-02
+*
+
 *  https://www.senecacollege.ca/about/policies/academic-integrity-policy.html
 * 
-<<<<<<< HEAD
 *  Name: Agraj Raya Student ID: 147863237 Date: 2025-03-04
 *
 ********************************************************************************/
 
 const express = require('express');
 const dataService = require('./module/data-service');
-=======
-*  Name: Agraj Raya Student ID: 147863237 Date: 2025-02-02
-*
-********************************************************************************/
+
 
 const express = require("express");
 const siteData = require("./modules/data-service");
 const path = require("path");
->>>>>>> 057687b9cf5baaac1a5916517d5ebba1947ec620
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-<<<<<<< HEAD
+
 app.set("view engine","ejs");
 
 app.use(express.static(__dirname + '/public'));
@@ -155,4 +147,4 @@ app.get("/sites/:siteId", (req, res) => {
 app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, "views", "404.html"));
 });
->>>>>>> 057687b9cf5baaac1a5916517d5ebba1947ec620
+
