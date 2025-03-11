@@ -1,0 +1,13 @@
+<div class="navbar bg-base-100 shadow-lg px-4">
+    <div class="flex-1">
+        <a href="/" class="btn btn-ghost text-xl">
+            <img src="/images/logo.png" alt="Flag" class="w-6 h-4 mr-2">
+            National Historic Sites
+        </a>
+    </div>
+    <div class="flex-none gap-4">
+        <a href="/sites" class="btn btn-ghost <%= (page === '/sites') ? 'active' : '' %>">View Site Collection</a>
+
+        <a href="/about" class="btn btn-ghost <%= (page === '/about') ? 'active' : '' %>">About</a>
+    </div>
+</div>

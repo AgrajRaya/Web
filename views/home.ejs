@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="autumn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Historic Sites</title>
+    <link href="/css/main.css" rel="stylesheet">
+</head>
+<body class="min-h-screen">
+     <!-- Include the Navbar partial -->
+     <%- include('partials/navbar', {page: '/'}) %>
+
+    <!-- Hero Section -->
+    <div class="hero max-h-[40vh] bg-base-200">
+      <div class="hero-content text-center">
+          <div class="max-w-4xl">
+              <h1 class="text-5xl font-bold mb-6">Discover Canada's Rich History</h1>
+              <h2 class="text-2xl font-medium mb-6">Explore the Stories Behind Canada's National Historic Sites</h2>
+              <a href="/sites" class="btn btn-primary">Explore All Sites</a>
+          </div>
+      </div>
+  </div>
+
+    <!-- Featured Sites -->
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Site 1 - Fort Fork -->
+            <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+                <figure class="px-4 pt-4">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Fort_Fork_National_historic_Site_of_Canada.JPG/320px-Fort_Fork_National_historic_Site_of_Canada.JPG" 
+                         alt="Fort Fork" 
+                         class="rounded-xl h-48 w-full object-cover">
+                </figure>
+                <div class="card-body">
+                    <h2 class="card-title">Fort Fork</h2>
+                    <p>Starting point of Alexander MacKenzie's historic 1793 expedition to the Pacific, a crucial site in western exploration.</p>
+                    <div class="text-sm mt-2 space-y-1">
+                        <div class="badge badge-outline">Established: 1792</div>
+                        <div class="flex items-center">
+                            📍 Peace River, AB
+                        </div>
+                    </div>
+                    <div class="card-actions mt-4">
+                        <a href="/sites/AB002" class="btn btn-primary w-full">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Site 2 - Barkerville -->
+            <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+                <figure class="px-4 pt-4">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Barkerville_BC_-_Church.jpg/360px-Barkerville_BC_-_Church.jpg" 
+                         alt="Barkerville" 
+                         class="rounded-xl h-48 w-full object-cover">
+                </figure>
+                <div class="card-body">
+                    <h2 class="card-title">Barkerville</h2>
+                    <p>Epicenter of the Cariboo Gold Rush, preserved as a living museum of 1860s frontier life in British Columbia.</p>
+                    <div class="text-sm mt-2 space-y-1">
+                        <div class="badge badge-outline">Founded: 1862</div>
+                        <div class="flex items-center">
+                            📍 Barkerville, BC
+                        </div>
+                    </div>
+                    <div class="card-actions mt-4">
+                        <a href="/sites/BC003" class="btn btn-primary w-full">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Site 3 - Basilica of St. John the Baptist -->
+            <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+                <figure class="px-4 pt-4">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/St_John%27s_Basilica.jpg/320px-St_John%27s_Basilica.jpg" 
+                         alt="St. John's Basilica" 
+                         class="rounded-xl h-48 w-full object-cover">
+                </figure>
+                <div class="card-body">
+                    <h2 class="card-title">St. John's Basilica</h2>
+                    <p>Majestic 19th-century cathedral showcasing Lombard Romanesque Revival architecture in Newfoundland.</p>
+                    <div class="text-sm mt-2 space-y-1">
+                        <div class="badge badge-outline">Completed: 1855</div>
+                        <div class="flex items-center">
+                            📍 St. John's, NL
+                        </div>
+                    </div>
+                    <div class="card-actions mt-4">
+                        <a href="/sites/NL001" class="btn btn-primary w-full">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

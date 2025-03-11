@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="fantasy">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - National Historic Sites</title>
+  <link href="/css/main.css" rel="stylesheet">
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <div class="navbar bg-base-100 shadow-lg px-4">
+    <div class="flex-1">
+      <a href="/" class="btn btn-ghost text-xl">
+        <img src="/images/logo.png" alt="Flag" class="w-6 h-4 mr-2">
+        National Historic Sites
+      </a>
+    </div>
+    <div class="flex-none gap-4">
+      <a href="/about" class="btn btn-ghost active">About</a>
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost">Region</div>
+        <ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+          <li><a href="/sites?region=Central Canada">Central Canada</a></li>
+          <li><a href="/sites?region=Prairie Provinces">Prairie Provinces</a></li>
+          <li><a href="/sites?region=West Coast">West Coast</a></li>
+          <li><a href="/sites?region=North">North</a></li>
+          <li><a href="/sites?region=Atlantic Region">Atlantic Region</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <main class="container mx-auto px-4 py-8 flex-grow">
+    <div class="hero bg-base-200 rounded-box p-8 mb-8">
+      <div class="hero-content text-center">
+        <h1 class="text-4xl font-bold">About This Project</h1><br>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 items-start">
+      <div class="card shadow-xl w-fit mx-auto">
+        <figure class="w-64 h-64">
+          <img src="https://imgs.search.brave.com/nICTyhtSmhU1RE0BrVK52-_WV5Ksje37nfMufhvHcFo/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzA5LzA4LzcyLzg5/LzM2MF9GXzkwODcy/ODkxOV9hNm10YkVL/MHBuSFdyaW0zY3R5/dFdGTFlJbVBSOFZ2/MS5qcGc" 
+               alt="Developer" 
+               class="w-full h-full object-cover rounded-box">
+        </figure>
+      </div>
+      <div class="space-y-4">
+        <h2 class="text-3xl font-bold">Agraj Raya</h2>
+        <p class="text-lg">
+          As a passionate web development student at Seneca College, I created this platform to celebrate Canada's 
+          diverse historical landmarks. This project reflects my dedication to blending technology with history, 
+          offering users an engaging way to explore Canada's heritage.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <div class="badge badge-primary">Javascript</div>
+          <div class="badge badge-secondary">HTML, CSS</div>
+          <div class="badge badge-accent">Tailwind, Daisy UI</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

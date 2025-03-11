@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="autumn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= site.name %> - Site Details</title>
+    <link href="/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <%- include('partials/navbar', { page: "" }) %>
+
+    <!-- Hero Section -->
+    <div class="hero bg-base-200 min-h-screen">
+        <div class="hero-content flex-col lg:flex-row">
+            <!-- Image Section -->
+            <img src="<%= site.image %>" alt="Image of <%= site.name %>" class="max-w-md rounded-lg shadow-2xl" />
+            
+            <!-- Content Section -->
+            <div>
+                <h1 class="text-5xl font-bold"><%= site.site %></h1>
+                <p class="py-6">
+                   Below, you will find detailed information about the site: <%= site.site %>
+                </p>
+                
+                <!-- Displaying Site Details -->
+                <div class="py-6">
+                    <p><strong>Site Name:</strong> <%= site.site %></p>
+                    <p><strong>Description:</strong> <%= site.description %></p>
+                    <p><strong>Date:</strong> <%= site.date %> (<%= site.dateType %>)</p>
+                    <p><strong>Location:</strong> <%= site.location %>, <%= site.provinceOrTerritoryObj.name %></p>
+                    <p><strong>Region:</strong> <%= site.provinceOrTerritoryObj.region %></p>
+                    <p><strong>Geolocation:</strong> <%= site.latitude %>, <%= site.longitude %></p>
+                    <p><strong>Designated:</strong> <%= site.designated %></p>
+                </div>
+
+                <!-- Quote Section (Loaded via JavaScript) -->
+                <div id="quote" class="py-6"></div>
+
+                <!-- Back Button -->
+                <a href="#" onclick="history.back(); return false;" class="btn btn-primary">Go Back</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to Fetch Quote -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+    fetch('http://quotable.io/random')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('quote').innerHTML = `
+                <div class="card p-3 shadow-sm">
+                    <p class="text-center"><strong>"${data.content}"</strong><br>- ${data.author}</p>
+                </div>
+            `;
+        })
+        .catch(error => {
+            console.error("Error fetching quote:", error);
+            document.getElementById('quote').innerHTML = `
+                <div class="card p-3 shadow-sm">
+                    <p class="text-center">Failed to load quote. Please try again later.</p>
+                </div>
+            `;
+        });
+});
+
+    </script>
+
+</body>
+
+</html>

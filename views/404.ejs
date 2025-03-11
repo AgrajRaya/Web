@@ -1,0 +1,24 @@
+<%- include('partials/navbar', { page: '' }) %>
+
+
+<!DOCTYPE html>
+<html lang="en" data-theme="autumn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found - National Historic Sites</title>
+  <link href="/css/main.css" rel="stylesheet">
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Error Content -->
+  <main class="flex-grow grid place-items-center">
+    <div class="text-center space-y-4">
+      <h1 class="text-9xl font-bold text-primary">404</h1>
+      <p class="text-4xl"><%# message %></p>
+      <p class="text-base-content/70">The page you're looking for doesn't exist.</p>
+      <a href="/" class="btn btn-primary mt-4">Return to Home</a>
+    </div>
+  </main>
+</body>
+</html>
