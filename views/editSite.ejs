@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Site</title>
+  <link href="/css/main.css" rel="stylesheet">
+</head>
+
+
+<body>
+<%- include('partials/navbar', { page: '' }) %>
+
+<div class="hero bg-gray-100 py-10">
+  <div class="hero-content text-center">
+    <h1 class="text-4xl font-bold">Edit Site: <%= site.site %></h1>
+  </div>
+</div>
+
+<form action="/editSite" method="POST" class="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+  <label for="siteId" class="block text-sm font-medium text-gray-700">Site ID</label>
+  <input type="hidden" id="siteId" name="id" value="<%= site.siteId %>" >
+
+  <!-- Site Name -->
+  <div class="mb-4">
+    <label for="site" class="block text-sm font-semibold">Site Name</label>
+    <input type="text" name="site" id="site" value="<%= site.site %>" class="w-full px-4 py-2 border rounded-lg" required>
+  </div>
+  
+  <!-- Description -->
+  <div class="mb-4">
+    <label for="description" class="block text-sm font-semibold">Description</label>
+    <input type="text" name="description" id="description" value="<%= site.description %>" class="w-full px-4 py-2 border rounded-lg" required>
+  </div>
+
+  <!-- Province / Territory Select -->
+  <div class="mb-4">
+    <label for="provinceOrTerritoryCode" class="block text-sm font-semibold">Province/Territory</label>
+    <select name="provinceOrTerritoryCode" id="provinceOrTerritoryCode" class="w-full px-4 py-2 border rounded-lg" required>
+      <% provincesAndTerritories.forEach(provOrTerr => { %>
+        <option <%= site.provinceOrTerritoryCode == provOrTerr.code ? 'selected' : '' %> value="<%= provOrTerr.code %>">
+          <%= provOrTerr.name %>
+        </option>
+      <% }) %>
+    </select>
+  </div>
+
+  <!-- Date -->
+  <div class="mb-4">
+    <label for="date" class="block text-sm font-semibold">Date</label>
+    <input type="integer" name="date" id="date" value="<%= site.date %>" class="w-full px-4 py-2 border rounded-lg" required>
+  </div>
+
+  <!-- Is World Heritage Site -->
+  <div class="mb-4 flex items-center">
+    <input type="checkbox" name="worldHeritageSite" id="worldHeritageSite" <%= site.worldHeritageSite ? 'checked' : '' %> class="mr-2">
+    <label for="worldHeritageSite" class="text-sm">Is World Heritage Site</label>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="mb-4">
+    <button type="submit" class="btn btn-success w-full">Update Site</button>
+  </div>
+</form>
+</body>
+</html>

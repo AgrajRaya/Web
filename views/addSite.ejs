@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Site</title>
+  <link href="/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Include the Navbar partial -->
+  <%- include('partials/navbar', { page: '/addSite' }) %>
+
+  <div class="hero min-h-screen bg-base-200 flex items-center justify-center">
+    <div class="card w-full lg:w-1/2 bg-base-100 shadow-xl">
+      <div class="card-body p-8">
+        <h1 class="text-3xl font-bold text-center mb-6">Add Site</h1>
+        <form action="/addSite" method="POST" class="space-y-4">
+          <div class="form-control">
+            <label for="siteId" class="label">
+              <span class="label-text">Site ID</span>
+            </label>
+            <input type="text" id="siteId" name="siteId" class="input input-bordered" required />
+          </div>
+
+          <div class="form-control">
+            <label for="site" class="label">
+              <span class="label-text">Site</span>
+            </label>
+            <input type="text" id="site" name="site" class="input input-bordered" placeholder="Enter site name" required />
+          </div>
+
+          <div class="form-control">
+            <label for="image" class="label">
+              <span class="label-text">Image URL</span>
+            </label>
+            <input type="url" id="image" name="image" class="input input-bordered" placeholder="URL"required />
+          </div>
+
+          <div class="form-control">
+            <label for="date" class="label">
+              <span class="label-text">Date</span>
+            </label>
+            <input type="number" id="date" name="date" class="input input-bordered" required />
+          </div>
+
+          <div class="form-control">
+            <label for="dateType" class="label">
+              <span class="label-text">Date Type</span>
+            </label>
+            <input type="text" id="dateType" name="dateType" class="input input-bordered" required />
+          </div>
+
+          <div class="form-control">
+            <label for="designated" class="label">
+              <span class="label-text">Designated</span>
+            </label>
+            <input type="number" id="designated" name="designated" class="input input-bordered" required />
+          </div>
+
+          <div class="form-control">
+            <label for="location" class="label">
+              <span class="label-text">Location</span>
+            </label>
+            <input type="text" id="location" name="location" class="input input-bordered" required />
+          </div>
+
+          <div class="form-control">
+            <label for="provinceOrTerritoryCode" class="label">
+              <span class="label-text">Province or Territory</span>
+            </label>
+            <select id="provinceOrTerritoryCode" name="provinceOrTerritoryCode" class="select select-bordered" required>
+              <% provincesAndTerritories.forEach(provinceOrTerritory => { %>
+                <option value="<%= provinceOrTerritory.code %>">
+                  <%= provinceOrTerritory.name %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="form-control">
+            <label for="description" class="label">
+              <span class="label-text">Description</span>
+            </label>
+            <textarea id="description" name="description" class="textarea textarea-bordered"></textarea>
+          </div>
+
+          <div class="form-control">
+            <label for="latitude" class="label">
+              <span class="label-text">Latitude</span>
+            </label>
+            <input type="number" id="latitude" name="latitude" class="input input-bordered" step="0.00000001" required />
+          </div>
+
+          <div class="form-control">
+            <label for="longitude" class="label">
+              <span class="label-text">Longitude</span>
+            </label>
+            <input type="number" id="longitude" name="longitude" class="input input-bordered" step="0.00000001" required />
+          </div>
+
+          <div class="form-control mt-6">
+            <button type="submit" class="btn btn-primary w-full">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

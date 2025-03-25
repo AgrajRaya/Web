@@ -7,8 +7,10 @@
 ********************************************************************************/
 
 const express = require('express');
-const siteData = require("./module/data-service");
+const siteData = require("./module/data-service"); 
 const path = require("path");
+const router = express.Router();
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,9 +19,11 @@ const PORT = process.env.PORT || 3000;
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-
 // Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, "public")));
+
+// Parse URL-encoded data (for form submissions)
+app.use(express.urlencoded({ extended: true }));
 
 // Initialize site data
 siteData.initialize()
@@ -65,6 +69,71 @@ siteData.initialize()
         .then(site => res.render("site", { site }))
         .catch(err => res.status(404).send(err));
     });
+
+    // Add route for GET /addSite
+    app.get('/addSite', (req, res) => {
+      siteData.getAllProvincesAndTerritories()
+        .then(provincesAndTerritories => {
+          // Render the addSite view with provincesAndTerritories
+          res.render('addSite', { provincesAndTerritories });
+        })
+        .catch(err => {
+          // Handle errors and show 500 page if something goes wrong
+          res.render('500', { message: `Unable to retrieve provinces and territories: ${err}` });
+        });
+    });
+
+    // POST /addSite
+app.post('/addSite', (req, res) => {
+  const newSiteData = req.body;  
+  siteData.addSite(newSiteData)  
+    .then(() => {
+      res.redirect('/sites');
+    })
+    .catch(err => {
+      res.render('500', { message: `Sorry, but we encountered the following error: ${err}` });
+    });
+});
+
+ // Add route for GET /editSite/:siteId
+ app.get('/editSite/:siteId', (req, res) => {
+  const { siteId } = req.params;
+  Promise.all([siteData.getSiteById(siteId), siteData.getAllProvincesAndTerritories()])
+    .then(([site, provincesAndTerritories]) => {
+      res.render('editSite', { site, provincesAndTerritories });
+    })
+    .catch(err => {
+      res.render('500', { message: `Unable to retrieve site or provinces and territories: ${err}` });
+    });
+});
+
+app.post("/editSite", (req, res) => {
+  const id = req.body.id;
+  const siteDataObj = req.body;
+
+  siteData.editSite(id, siteDataObj)
+    .then(() => {
+      res.redirect("/sites");
+    })
+    .catch((err) => {
+      res.render("500", { message: `I'm sorry, but we have encountered the following error: ${err}` });
+    });
+});
+
+// Add route for DELETE site by siteId
+app.get('/deleteSite/:id', (req, res) => {
+  const siteId = req.params.id;
+
+  siteData.deleteSite(siteId)
+    .then(() => {
+      // Redirect to the sites page after successful deletion
+      res.redirect('/sites');
+    })
+    .catch((err) => {
+      // If an error occurs, render the 500 page
+      res.render('500', { message: `I'm sorry, but we have encountered the following error: ${err}` });
+    });
+})
 
     // 404 route for unmatched URLs
     app.use((req, res) => {

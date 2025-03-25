@@ -8,5 +8,6 @@
     <div class="flex-none gap-4">
         <a href="/sites" class="btn btn-ghost hover:bg-primary hover:text-white <%= (page === '/sites') ? 'active' : '' %>">View Site Collection</a>
         <a href="/about" class="btn btn-ghost hover:bg-primary hover:text-white <%= (page === '/about') ? 'active' : '' %>">About</a>
+        <a class="<%= (page == '/addSite') ? 'active' : '' %>" href="/addSite">Add Site</a>
     </div>
 </div>
