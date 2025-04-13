@@ -1,0 +1,65 @@
+<%- include('partials/navbar', { page: ' ' }) %>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login History</title>
+    <link href="/css/main.css" rel="stylesheet">
+
+</head>
+
+
+<body class="bg-gray-100">
+
+<main class="min-h-screen flex flex-col items-center justify-start bg-base-200 p-8">
+    <div class="w-full max-w-4xl bg-white p-6 rounded shadow-md">
+      <h1 class="text-3xl font-bold text-center mb-6">Login History</h1>
+  
+      <% if (user && user.userName) { %>
+        <div class="mb-4 text-lg font-semibold text-gray-600">
+          User: <span class="text-primary font-bold"><%= user.userName %></span>
+        </div>
+      <% } %>
+  
+      <% if (user && user.loginHistory && user.loginHistory.length > 0) { %>
+        <div class="overflow-x-auto">
+          <table class="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Timestamp</th>
+                <th>User Agent</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% user.loginHistory.forEach((entry, index) => { %>
+                <tr>
+                  <td><%= index + 1 %></td>
+                  <td><%= new Date(entry.dateTime).toLocaleString() %></td>
+                  <td><%= entry.userAgent %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } else { %>
+        <div class="alert alert-info mt-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m0-4h.01M12 20h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
+          </svg>
+          <span>No login history available.</span>
+        </div>
+      <% } %>
+  
+      <div class="mt-6 flex justify-center">
+        <a href="/" class="btn btn-primary">Return to Home</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
+  

@@ -40,6 +40,11 @@
                 <!-- Quote Section (Loaded via JavaScript) -->
                 <div id="quote" class="py-6"></div>
 
+                <!-- Edit Button (Only visible to logged-in users) -->
+        <% if(session.user) { %>
+            <a href="/edit/<%= site._id %>" class="btn btn-primary">Edit Site</a>
+        <% } %>
+
                 <!-- Back Button -->
                 <a href="#" onclick="history.back(); return false;" class="btn btn-primary">Go Back</a>
             </div>

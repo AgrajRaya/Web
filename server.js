@@ -1,150 +1,220 @@
 /********************************************************************************
-*  WEB322 – Assignment 04
-*  Name: Agraj Raya Student ID: 147863237 Date: 2025-02-02
+*  WEB322 – Assignment 06
+* 
+*  I declare that this assignment is my own work in accordance with Seneca's
+*  Academic Integrity Policy:
+* 
 *  https://www.senecacollege.ca/about/policies/academic-integrity-policy.html
 * 
-*  Name: Agraj Raya Student ID: 147863237 Date: 2025-03-04
+*  Name: Agraj Raya Student ID: _147863237 Date: 2025-04-12
+*
+*  Published URL:  
+*
 ********************************************************************************/
+
 
 const express = require('express');
 const siteData = require("./module/data-service"); 
+const authData = require('./module/auth-service');
+const clientSessions = require("client-sessions"); 
 const path = require("path");
 const router = express.Router();
-
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const mongoose = require('mongoose');
+
+// Database connection
+mongoose.connect('mongodb+srv://agraj:gmlmHoeaZBTkDUTO@cluster0.ctd5j4d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => {
+  console.log('MongoDB connected');
+})
+.catch((err) => {
+  console.error('MongoDB connection failed:', err);
+});
+
+
+// Session middleware config
+app.use(clientSessions({
+  cookieName: "session",
+  secret: "superSecret1234",
+  duration: 2 * 60 * 1000,
+  activeDuration: 1000 * 60
+}));
+
+// Custom middleware to expose session to views
+app.use((req, res, next) => {
+  res.locals.session = req.session;
+  next();
+});
+
+// Middleware to protect routes
+function ensureLogin(req, res, next) {
+  if (!req.session.user) {
+    res.redirect("/login");
+  } else {
+    next();
+  }
+}
+
 // Set EJS as the template engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
-// Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, "public")));
-
-// Parse URL-encoded data (for form submissions)
 app.use(express.urlencoded({ extended: true }));
 
-// Initialize site data
+
+
+// Startup initialization chain
 siteData.initialize()
+  .then(authData.initialize)
   .then(() => {
-    console.log("Site data initialized.");
+    console.log("Data and Auth initialized.");
 
-    // Serve home page
-    app.get('/', (req, res) => {
-      res.render('home');
-    });
+    // Routes
+    app.get('/', (req, res) => res.render('home'));
 
-    // Serve about page
-    app.get('/about', (req, res) => {
-      res.render('about');
-    });
+    app.get('/about', (req, res) => res.render('about'));
 
-    // Handle the "/sites" route with query parameters
     app.get('/sites', (req, res) => {
       const { region, provinceOrTerritory } = req.query;
 
       if (region) {
-        // If region is provided, filter by region
         siteData.getSitesByRegion(region)
           .then(sites => res.render('sites', { sites }))
           .catch(err => res.status(404).send(err));
       } else if (provinceOrTerritory) {
-        // If provinceOrTerritory is provided, filter by province or territory
         siteData.getSitesByProvinceOrTerritoryName(provinceOrTerritory)
           .then(sites => res.render('sites', { sites }))
           .catch(err => res.status(404).send(err));
       } else {
-        // If no query parameters, return all sites
         siteData.getAllSites()
           .then(sites => res.render('sites', { sites }))
           .catch(err => res.status(404).send(err));
       }
     });
 
-    // Dynamic route for individual sites by siteId
     app.get('/sites/:siteId', (req, res) => {
-      const { siteId } = req.params;
-      siteData.getSiteById(siteId)
+      siteData.getSiteById(req.params.siteId)
         .then(site => res.render("site", { site }))
         .catch(err => res.status(404).send(err));
     });
 
-    // Add route for GET /addSite
-    app.get('/addSite', (req, res) => {
+    app.get('/addSite', ensureLogin, (req, res) => {
       siteData.getAllProvincesAndTerritories()
         .then(provincesAndTerritories => {
-          // Render the addSite view with provincesAndTerritories
           res.render('addSite', { provincesAndTerritories });
         })
         .catch(err => {
-          // Handle errors and show 500 page if something goes wrong
           res.render('500', { message: `Unable to retrieve provinces and territories: ${err}` });
         });
     });
 
-    // POST /addSite
-app.post('/addSite', (req, res) => {
-  const newSiteData = req.body;  
-  siteData.addSite(newSiteData)  
-    .then(() => {
-      res.redirect('/sites');
-    })
-    .catch(err => {
-      res.render('500', { message: `Sorry, but we encountered the following error: ${err}` });
+    app.post('/addSite', ensureLogin, (req, res) => {
+      const newSiteData = req.body;
+      siteData.addSite(newSiteData)
+        .then(() => res.redirect('/sites'))
+        .catch(err => {
+          res.render('500', { message: `Sorry, but we encountered the following error: ${err}` });
+        });
     });
-});
 
- // Add route for GET /editSite/:siteId
- app.get('/editSite/:siteId', (req, res) => {
-  const { siteId } = req.params;
-  Promise.all([siteData.getSiteById(siteId), siteData.getAllProvincesAndTerritories()])
-    .then(([site, provincesAndTerritories]) => {
-      res.render('editSite', { site, provincesAndTerritories });
-    })
-    .catch(err => {
-      res.render('500', { message: `Unable to retrieve site or provinces and territories: ${err}` });
+    app.get('/editSite/:siteId', ensureLogin, (req, res) => {
+      const { siteId } = req.params;
+      Promise.all([siteData.getSiteById(siteId), siteData.getAllProvincesAndTerritories()])
+        .then(([site, provincesAndTerritories]) => {
+          res.render('editSite', { site, provincesAndTerritories });
+        })
+        .catch(err => {
+          res.render('500', { message: `Unable to retrieve site or provinces and territories: ${err}` });
+        });
     });
-});
 
-app.post("/editSite", (req, res) => {
-  const id = req.body.id;
-  const siteDataObj = req.body;
+    app.post("/editSite", ensureLogin, (req, res) => {
+      const id = req.body.id;
+      const siteDataObj = req.body;
 
-  siteData.editSite(id, siteDataObj)
-    .then(() => {
-      res.redirect("/sites");
-    })
-    .catch((err) => {
-      res.render("500", { message: `I'm sorry, but we have encountered the following error: ${err}` });
+      siteData.editSite(id, siteDataObj)
+        .then(() => res.redirect("/sites"))
+        .catch(err => {
+          res.render("500", { message: `I'm sorry, but we have encountered the following error: ${err}` });
+        });
     });
-});
 
-// Add route for DELETE site by siteId
-app.get('/deleteSite/:id', (req, res) => {
-  const siteId = req.params.id;
+    app.get('/deleteSite/:id', ensureLogin, (req, res) => {
+      const siteId = req.params.id;
 
-  siteData.deleteSite(siteId)
-    .then(() => {
-      // Redirect to the sites page after successful deletion
-      res.redirect('/sites');
-    })
-    .catch((err) => {
-      // If an error occurs, render the 500 page
-      res.render('500', { message: `I'm sorry, but we have encountered the following error: ${err}` });
+      siteData.deleteSite(siteId)
+        .then(() => res.redirect('/sites'))
+        .catch(err => {
+          res.render('500', { message: `I'm sorry, but we have encountered the following error: ${err}` });
+        });
     });
-})
 
-    // 404 route for unmatched URLs
+// Auth routes
+
+    // GET /login
+    app.get('/login', (req, res) => {
+      res.render('login', { errorMessage: '', userName: '' });
+    });
+
+    // GET /register
+    app.get('/register', (req, res) => {
+      res.render('register', { errorMessage: '', userName: '' });
+    });
+
+    // POST /register
+    app.post('/register', (req, res) => {
+      authData.registerUser(req.body)
+        .then(() => {
+          res.render('register', { successMessage: 'User created', errorMessage: '', userName: '' });
+        })
+        .catch((err) => {
+          res.render('register', { errorMessage: err, userName: req.body.userName });
+        });
+    });
+
+    // POST /login
+    app.post('/login', (req, res) => {
+      req.body.userAgent = req.get('User-Agent');
+      authData.checkUser(req.body)
+        .then((user) => {
+          req.session.user = {
+            userName: user.userName,
+            email: user.email,
+            loginHistory: user.loginHistory,
+          };
+          res.redirect('/sites');
+        })
+        .catch((err) => {
+          res.render('login', { errorMessage: err, userName: req.body.userName });
+        });
+    });
+
+    // GET /logout
+    app.get('/logout', (req, res) => {
+      req.session.reset();
+      res.redirect('/');
+    });
+
+    // GET /userHistory
+    app.get('/userHistory', ensureLogin, (req, res) => {
+      res.render('userHistory', { user: req.session.user });
+    });
+
+    // 404 route
     app.use((req, res) => {
       res.status(404).render("404", { message: "I'm sorry, we're unable to find what you're looking for" });
     });
 
     // Start the server
     app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-
   })
   .catch(err => {
-    console.error("Failed to initialize site data:", err);
-    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`)); // Still start the server in case of failure
+    console.error("Failed to initialize site or auth data:", err);
+    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`)); // Still run server
   });
