@@ -1,18 +1,3 @@
-/********************************************************************************
-*  WEB322 – Assignment 06
-* 
-*  I declare that this assignment is my own work in accordance with Seneca's
-*  Academic Integrity Policy:
-* 
-*  https://www.senecacollege.ca/about/policies/academic-integrity-policy.html
-* 
-*  Name: Agraj Raya Student ID: _147863237 Date: 2025-04-12
-*
-*  Published URL:  
-*
-********************************************************************************/
-
-
 const express = require('express');
 const siteData = require("./module/data-service"); 
 const authData = require('./module/auth-service');
